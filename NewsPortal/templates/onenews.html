@@ -1,0 +1,15 @@
+{% extends 'flatpages/default.html' %}
+
+{% load censor_filters %}
+
+{% block title %}
+    Onenews
+{% endblock title %}
+
+{% block content %}
+    <h2>{{ onenews.author_post }}</h2>
+    <h4>{{ onenews.date_post|date:'d M Y' }}</h4>
+    <h1>{{ onenews.heading_post|censor }}</h1>
+    <h4>{{ onenews.text_post|censor }}</h4>
+    <h3>Рейтинг статьи: {{ onenews.rating_post }}</h3>
+{% endblock content %}

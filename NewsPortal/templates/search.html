@@ -1,0 +1,38 @@
+{% extends 'flatpages/default.html' %}
+
+{% load censor_filters %}
+
+
+{% block title %}
+    Search
+{% endblock title %}
+
+{% block content %}
+    <h1>Всего статей: {{ search|length }}</h1>
+        <hr>
+    <h2> Сегодня: {{ time_now|date:'d M Y' }} </h2>
+    <h4>Дата первой публикации: 22 Jun 2022</h4>
+        <hr>
+        <form method="GET">
+            {{ filter.form }}
+            <input type="submit" value="Найти">
+        </form>
+        {% if search %}
+             <table>
+               <tr>
+                   <td>Заголовок</td>
+                   <td>Дата публикации</td>
+                   <td>Фрагмент статьи</td>
+               </tr>
+                 {% for search in filter.qs %}
+               <tr>
+                   <td>{{ search.heading_post|censor }}</td>
+                   <td>{{ search.date_post|date:'d M Y'}}</td>
+                   <td>{{ search.text_post|truncatechars:20|censor }}</td>
+               </tr>
+                 {% endfor %}
+             </table>
+        {% else %}
+            <h2>Новостей нет!</h2>
+        {% endif %}
+{% endblock content %}

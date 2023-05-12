@@ -1,0 +1,31 @@
+{% extends 'flatpages/default.html' %}
+
+{% load censor_filters %}
+
+{% block title %}
+    NewsEdit
+{% endblock title %}
+
+{% block content %}
+    <h2>Вы действительно хотите удалить публикацию?</h2>
+    <hr>
+    {% if news %}
+         <table>
+           <tr>
+               <td>Заголовок</td>
+               <td>Дата публикации</td>
+               <td>Фрагмент статьи</td>
+           </tr>
+             {% for onenews in news %}
+           <tr>
+               <td>{{ onenews.heading_post|censor }}</td>
+               <td>{{ onenews.date_post|date:'d M Y'}}</td>
+               <td>{{ onenews.text_post|truncatechars:20|censor }}</td>
+           </tr>
+             {% endfor %}
+         </table>
+    {% endif %}
+<form method="POST">
+    {% csrf_token %}
+    <input type="submit" value="подтвердить"></form>
+{% endblock content %}

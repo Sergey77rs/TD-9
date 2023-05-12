@@ -1,0 +1,13 @@
+{% extends 'flatpages/default.html' %}
+
+{% block title %} NewsEdit {% endblock title %}
+
+{% block content %}
+<h2>Редактировать публикацию:</h2>
+    <hr>
+<form method="POST">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Ввести изменния">
+</form>
+{% endblock content %}

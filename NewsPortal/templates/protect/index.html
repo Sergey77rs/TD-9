@@ -1,0 +1,18 @@
+{% extends 'flatpages/default.html' %}
+
+{% url 'logout' %}
+{% url 'upgrade' %}
+
+{% block content %}
+
+<h2>Страница зарегестрированного пользователя {{request.user.username}}</h2>
+<h4>Для добавления, редактирования и удаления публикаций нужно обладать правами автора.</h4>
+<div> Это тестовый режим и персональной информации пока нет.</div>
+<hr>
+{% if is_not_authors %}
+<button> <a href="news/upgrade/">«Стать автором»</a> </button>
+{% endif %}
+
+<button> <a href="news/logout">«Выйти»</a> </button>
+
+{% endblock %}
