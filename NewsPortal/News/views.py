@@ -19,6 +19,9 @@ class NewsList(ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+#        context['filter'] = PostFilter(self.request.GET, queryset=self.get_queryset())
+#        context['categories'] = Category.objects.all()
+#        context['form'] = ProductForm()
         return context
 
 
@@ -71,7 +74,7 @@ class NewsDelete(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     template_name = 'delete.html'
     queryset = Post.objects.all()
     success_url = '/news/'
-    permission_required = ('News.delete_post', )
+    permission_required = ('News.delete_post',)
 
 
 @login_required
@@ -80,17 +83,17 @@ def upgrade_me(request):
     authors_group = Group.objects.get(name='authors')
     if not request.user.groups.filter(name='authors').exists():
         authors_group.user_set.add(user)
-    return redirect('/')
+    return redirect('/news/')
 
 
-class CategoryListView(ListView):
+class CategoryListView(NewsList):
     model = Post
     template_name = 'category_list.html'
     context_object_name = 'category_news_list'
 
     def get_queryset(self):
         self.category = get_object_or_404(Category, id=self.kwargs['pk'])
-        queryset = Post.objects.filter(category=self.category).order_by('-date_in')
+        queryset = Post.objects.filter(category=self.category).order_by('-id')
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -105,5 +108,14 @@ def subscribe(request, pk):
     user = request.user
     category = Category.objects.get(id=pk)
     category.subscribers.add(user)
-    message = 'вы подписались на категорию: '
+    message = 'Вы успешно подписались на рассылку новостей в категории '
+    return render(request, 'subscribe.html', {'category': category, 'message': message})
+
+
+@login_required
+def unsubscribe(request, pk):
+    user = request.user
+    category = Category.objects.get(id=pk)
+    category.subscribers.remove(user)
+    message = 'Вы отписались от рассылки новостей в категории '
     return render(request, 'subscribe.html', {'category': category, 'message': message})

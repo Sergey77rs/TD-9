@@ -22,7 +22,7 @@
            <tr>
                <td><a href = "{% url 'onenews' onenews.id %}">{{ onenews.heading_post|censor }}</a>></td>
                <td>
-                    {% for category in post.category.all %}
+                    {% for category in onenews.category.all %}
                         <a href="{% url 'category_list' category.id %}">{{ category }}</a>
                     {% endfor %}
                 </td>

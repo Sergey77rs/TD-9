@@ -7,7 +7,7 @@
 {% endblock title %}
 
 {% block content %}
-    <h1> Cтатей на странице: {{ news|length }}</h1>
+    <h1> Cтатей на странице: {{ category_news_list|length }}</h1>
     <h4>Для редактировния и удаления публикаций нужно обладать правами автора</h4>
     <hr>
     {% if category_news_list %}
@@ -22,7 +22,7 @@
            <tr>
                <td><a href = "{% url 'onenews' onenews.id %}">{{ onenews.heading_post|censor }}</a>></td>
                <td>
-                    {% for category in post.category.all %}
+                    {% for category in onenews.category.all %}
                         <a href="{% url 'category_list' category.id %}">{{ category }}</a>
                     {% endfor %}
                 </td>
@@ -35,6 +35,8 @@
          </table>
     {% if is_not_subscriber %}
         <p class="text-center"><a href="{% url 'subscribe' category.id %}" class="btn btn-secondary btn-sm">подписаться</a></p>
+    {% else %}
+        <p class="text-center"><a href="{% url 'unsubscribe' category.id %}" class="btn btn-secondary btn-sm">отписатся</a></p>
     {% endif %}
     {% else %}
         <h2>Новостей нет!</h2>
@@ -58,6 +60,5 @@
             <a href="?page={{ page_obj.next_page_number }}">>>></a>
             <a href="?page={{ page_obj.paginator.num_pages }}">Последняя</a>
         {% endif %}
-
     {% endif %}
 {% endblock content %}
